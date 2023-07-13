@@ -1,0 +1,26 @@
+{% extends 'base_template.html' %}
+{% block content %}
+<main class="flex-grow-1">
+    <div class="container-lg mt-1">
+        <h1>Сайт: {{ item.name }}</h1>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover text-nowrap" data-test="url">
+                <tbody>
+                <tr>
+                    <td>ID</td>
+                    <td>{{ item.id }}</td>
+                </tr>
+                <tr>
+                    <td>Имя</td>
+                    <td>{{ item.name }}</td>
+                </tr>
+                <tr>
+                    <td>Дата создания</td>
+                    <td>{{ item.created_at }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+{% endblock %}
