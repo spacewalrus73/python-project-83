@@ -21,7 +21,7 @@
                             <a href="/urls/{{ item.id }}">{{ item.name }}</a>
                         </td>
                         <td>{{ item.created_at if item.created_at else '' }}</td>
-                        <td></td>
+                        <td>{{ item.status_code if item.status_code else '' }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
