@@ -4,16 +4,16 @@ from validators.url import url
 def validate(address: str) -> list:
     """Complex validator for url address"""
     errors = []
-    if not url_not_empty(address):
+    if not url_empty(address):
         errors.append("URL обязателен")
     if not url_has_normal_length(address):
-        errors.append("URL слишком длинный")
+        errors.append("URL превышает 255 символов")
     if not url_valid(address):
         errors.append("Некорректный URL")
     return errors
 
 
-def url_not_empty(address: str) -> bool:
+def url_empty(address: str) -> bool:
     """Simple predicate function that returns True
     if url not empty string, False if not"""
     return address != ''
