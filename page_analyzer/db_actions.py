@@ -54,13 +54,15 @@ def select(table_name: str,
 def select_table_websites() -> list[tuple]:
     with connect(DATABASE_URL) as connection:
         with connection.cursor() as cur:
-            cur.execute("""SELECT urls.id, urls.name, url_checks.created_at 
-                                FROM urls LEFT JOIN (SELECT DISTINCT ON 
-                                    (url_id) url_id, created_at
-                                    FROM url_checks
-                                    ORDER BY url_id, created_at DESC)
-                                AS url_checks ON urls.id = url_checks.url_id 
-                                ORDER BY urls.id DESC;""")
+            cur.execute("""SELECT urls.id, urls.name, 
+                                  url_checks.created_at, 
+                                  url_checks.status_code 
+                           FROM urls LEFT JOIN (SELECT DISTINCT ON 
+                                (url_id) url_id, created_at, status_code
+                                FROM url_checks
+                                ORDER BY url_id, created_at DESC)
+                           AS url_checks ON urls.id = url_checks.url_id 
+                           ORDER BY urls.id DESC;""")
             result = cur.fetchall()
     return result
 
