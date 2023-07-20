@@ -2,6 +2,7 @@ import os
 from datetime import date
 from dotenv import load_dotenv
 from page_analyzer import db_actions as db
+from page_analyzer.parcer import check_availability
 from page_analyzer.validator import validate
 from flask import (
     Flask,
@@ -19,8 +20,8 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
 
 @app.route("/")
-def view_home_page(url=''):
-    return render_template('home_page.html', url=url)
+def view_home_page():
+    return render_template('home_page.html')
 
 
 @app.post("/urls")
@@ -38,8 +39,9 @@ def receive_url():
                    where='name',
                    param=income_url)
     if id:
+        value_of_id = db.extract_one(id)
         flash("Страница уже существует", "info")
-        return redirect(url_for('view_home_page', url=income_url), code=302)
+        return redirect(url_for('show_site_page', id=value_of_id), code=302)
 
     db.insert(table_name='urls',
               fields=['name', 'created_at'],
@@ -69,9 +71,11 @@ def show_site_page(id):
                             param=id,
                             sort_by='id')
     checks = db.change_structure(checks_data,
-                                 keys=["id", "url_id", "status_code",
-                                       "h1", "title", "description",
-                                       "created_at"])
+                                 keys=[
+                                     "id", "url_id", "status_code",
+                                     "h1", "title", "description",
+                                     "created_at"
+                                 ])
 
     return render_template('url_page.html', item=item, checks=checks)
 
@@ -79,14 +83,25 @@ def show_site_page(id):
 @app.get("/urls")
 def show_websites():
     selected = db.select_table_websites()
-    data = db.change_structure(selected, keys=["id", "name", "created_at"])
+    data = db.change_structure(selected, keys=["id",
+                                               "name",
+                                               "created_at",
+                                               "status_code"])
     return render_template("urls_page.html", data=data)
 
 
 @app.post("/urls/<id>/checks")
 def check(id):
+    selected_url = db.select(table_name='urls', fields=["name"], where='id', param=int(id))
+    url = db.extract_one(selected_url)
+    code = check_availability(url)
+
+    if not code:
+        flash("Произошла ошибка при проверке", "danger")
+        return redirect(url_for('show_site_page', id=id), code=302)
+
     db.insert(table_name='url_checks',
-              fields=['url_id', 'created_at'],
-              values=[id, date.today()])
+              fields=['url_id', 'created_at', 'status_code'],
+              values=[id, date.today(), code])
     flash("Страница успешно проверена", "success")
     return redirect(url_for("show_site_page", id=id), code=302)
