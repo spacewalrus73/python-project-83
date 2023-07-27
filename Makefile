@@ -8,6 +8,7 @@ start:
 
 lint:
 	poetry run flake8 page_analyzer
+	poetry run flake8 tests
 
 build:
 	poetry build
@@ -23,3 +24,6 @@ package-reinstall:
 
 install:
 	poetry install
+
+test-coverage:
+	poetry run pytest --cov=page_analyzer --cov-report xml
