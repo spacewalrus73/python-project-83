@@ -2,8 +2,8 @@ import os
 from datetime import date
 from dotenv import load_dotenv
 from page_analyzer import db_actions as db
-from page_analyzer.parcer import check_availability
 from page_analyzer.validator import validate
+from page_analyzer.parser import parse, get_status_code
 from flask import (
     Flask,
     render_template,
@@ -92,16 +92,26 @@ def show_websites():
 
 @app.post("/urls/<id>/checks")
 def check(id):
-    selected_url = db.select(table_name='urls', fields=["name"], where='id', param=int(id))
+    selected_url = db.select(table_name='urls',
+                             fields=["name"],
+                             where='id',
+                             param=int(id))
     url = db.extract_one(selected_url)
-    code = check_availability(url)
+    code = get_status_code(url)
 
     if not code:
         flash("Произошла ошибка при проверке", "danger")
         return redirect(url_for('show_site_page', id=id), code=302)
 
+    seo_params = parse(url)
     db.insert(table_name='url_checks',
-              fields=['url_id', 'created_at', 'status_code'],
-              values=[id, date.today(), code])
+              fields=['url_id', 'created_at', 'status_code',
+                      'h1', 'title', 'description'],
+              values=[id, date.today(), code, seo_params["h1"],
+                      seo_params["title"], seo_params["description"]])
     flash("Страница успешно проверена", "success")
     return redirect(url_for("show_site_page", id=id), code=302)
+
+
+if __name__ == '__main__':
+    app.run()
