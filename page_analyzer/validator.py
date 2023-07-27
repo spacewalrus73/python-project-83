@@ -14,8 +14,10 @@ def validate(address: str) -> list:
 
 
 def url_empty(address: str) -> bool:
-    """Simple predicate function that returns True
-    if url not empty string, False if not"""
+    """
+    Simple predicate function that returns True if url not empty string,
+    False if not
+    """
     return address != ''
 
 
