@@ -36,7 +36,7 @@ def test_home_page(client):
 def test_receive_url(id_test, client):
     response = client.get(f"/urls/{id_test}")
     assert response.status_code == 200
-    assert "Страница добавлена успешно" in response.get_data(as_text=True)
+    assert "Страница успешно добавлена" in response.get_data(as_text=True)
 
     client.post("/urls", data={"url": "https://ru.hexlet.io"})
     response = client.get(f"/urls/{id_test}")
