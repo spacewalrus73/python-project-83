@@ -54,7 +54,7 @@ def receive_url():
                    param=normalized_url)
     value_of_id = db.extract_one(id)
 
-    flash("Страница добавлена успешно", "success")
+    flash("Страница успешно добавлена", "success")
     return redirect(url_for("show_site_page", id=value_of_id), code=302)
 
 
