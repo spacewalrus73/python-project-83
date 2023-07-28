@@ -3,7 +3,8 @@ from datetime import date
 from dotenv import load_dotenv
 from page_analyzer import db_actions as db
 from page_analyzer.validator import validate
-from page_analyzer.parser import parse, get_status_code
+from page_analyzer.normalizer import normalize
+from page_analyzer.url_checker import get_seo_params, get_status_code
 from flask import (
     Flask,
     render_template,
@@ -28,11 +29,11 @@ def view_home_page():
 def receive_url():
     income_url = request.form.get('url').strip()
     errors = validate(income_url)
-
+    normalized_url = normalize(income_url)
     if errors:
         for error in errors:
             flash(error, "danger")
-        return redirect(url_for('view_home_page', url=income_url), code=302)
+        return redirect(url_for('view_home_page'), code=302)
 
     id = db.select(table_name='urls',
                    fields=['id'],
@@ -45,12 +46,12 @@ def receive_url():
 
     db.insert(table_name='urls',
               fields=['name', 'created_at'],
-              values=[income_url, date.today()])
+              values=[normalized_url, date.today()])
 
     id = db.select(table_name='urls',
                    fields=['id'],
                    where='name',
-                   param=income_url)
+                   param=normalized_url)
     value_of_id = db.extract_one(id)
 
     flash("Страница добавлена успешно", "success")
@@ -103,7 +104,7 @@ def check(id):
         flash("Произошла ошибка при проверке", "danger")
         return redirect(url_for('show_site_page', id=id), code=302)
 
-    seo_params = parse(url)
+    seo_params = get_seo_params(url)
     db.insert(table_name='url_checks',
               fields=['url_id', 'created_at', 'status_code',
                       'h1', 'title', 'description'],
@@ -111,6 +112,11 @@ def check(id):
                       seo_params["title"], seo_params["description"]])
     flash("Страница успешно проверена", "success")
     return redirect(url_for("show_site_page", id=id), code=302)
+
+
+@app.errorhandler(404)
+def page_not_found():
+    return render_template("404.html")
 
 
 if __name__ == '__main__':
