@@ -30,6 +30,7 @@ def receive_url():
     income_url = request.form.get('url').strip()
     errors = validate(income_url)
     normalized_url = normalize(income_url)
+
     if errors:
         for error in errors:
             flash(error, "danger")
@@ -38,7 +39,7 @@ def receive_url():
     id = db.select(table_name='urls',
                    fields=['id'],
                    where='name',
-                   param=income_url)
+                   param=normalized_url)
     if id:
         value_of_id = db.extract_one(id)
         flash("Страница уже существует", "info")
