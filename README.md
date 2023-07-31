@@ -5,8 +5,7 @@ ______________________________
 ![Анализатор страниц главная](https://github.com/spacewalrus73/Gifs/blob/master/png_3prj/main_page.png)
 ______________________________
 ### Hexlet tests and linter status:
-[![Actions Status](https://github.com/spacewalrus73/python-project-83/workflows/hexlet-check/badge.svg)](https://github.com/spacewalrus73/python-project-83/actions)  
-[![CI Tests](https://github.com/spacewalrus73/python-project-83/actions/workflows/CI_tests.yml/badge.svg)](https://github.com/spacewalrus73/python-project-83/actions)
+[![Actions Status](https://github.com/spacewalrus73/python-project-83/workflows/hexlet-check/badge.svg)](https://github.com/spacewalrus73/python-project-83/actions)
 [![Maintainability](https://api.codeclimate.com/v1/badges/273a2291be7ec3020e19/maintainability)](https://codeclimate.com/github/spacewalrus73/python-project-83/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/273a2291be7ec3020e19/test_coverage)](https://codeclimate.com/github/spacewalrus73/python-project-83/test_coverage)  
 ______________________________
@@ -32,3 +31,4 @@ ________________________________
 `python3 -m pip install --user git+https://github.com/spacewalrus73/python-project-50`  
 or  
 `git clone https://github.com/spacewalrus73/python-project-50` + `python3 -m pip install .`  
+<a href="https://my-app-bqkg.onrender.com/">Demonstration</a>
