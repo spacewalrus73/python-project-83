@@ -34,7 +34,7 @@ def receive_url():
     if errors:
         for error in errors:
             flash(error, "danger")
-        return redirect(url_for('view_home_page'), code=422)
+        return render_template('home_page.html'), 422
 
     id = db.select(table_name='urls',
                    fields=['id'],
