@@ -34,7 +34,7 @@ def receive_url():
     if errors:
         for error in errors:
             flash(error, "danger")
-        return redirect(url_for('view_home_page'), code=302)
+        return redirect(url_for('view_home_page'), code=422)
 
     id = db.select(table_name='urls',
                    fields=['id'],
@@ -116,7 +116,7 @@ def check(id):
 
 
 @app.errorhandler(404)
-def page_not_found():
+def page_not_found(error):
     return render_template("404.html")
 
 
