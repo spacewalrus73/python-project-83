@@ -43,9 +43,8 @@ def test_receive_url(id_test, client):
     assert response.status_code == 200
     assert 'Страница уже существует' in response.get_data(as_text=True)
 
-    client.post("/urls", data={"url": ''})
-    response = client.get("/")
-    assert response.status_code == 200
+    response = client.post("/urls", data={"url": ''})
+    assert response.status_code == 422
     assert "URL обязателен" in response.get_data(as_text=True)
     assert "Некорректный URL" in response.get_data(as_text=True)
 
