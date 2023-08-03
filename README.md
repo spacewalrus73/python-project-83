@@ -28,7 +28,7 @@ ________________________________
 ## _Installation_  
 1. You have to be installed Python (preferably python 3.10) and pip
 2. Run the command in terminal:  
-`python3 -m pip install --user git+https://github.com/spacewalrus73/python-project-50`  
+`python3 -m pip install --user git+https://github.com/spacewalrus73/python-project-83`  
 or  
-`git clone https://github.com/spacewalrus73/python-project-50` + `python3 -m pip install .`  
+`git clone https://github.com/spacewalrus73/python-project-83` + `python3 -m pip install .`  
 ## __<a href="https://my-app-bqkg.onrender.com/">Demonstration</a>__
