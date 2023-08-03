@@ -48,15 +48,14 @@ def receive_url():
 
 @app.get("/urls/<id>")
 def show_site_page(id):
-    site = act.get_site(int(id))
-    checks = act.get_check(int(id))
-    return render_template('url_page.html', item=site, checks=checks)
+    return render_template('url_page.html',
+                           item=act.get_site(int(id)),
+                           checks=act.get_check(int(id)))
 
 
 @app.get("/urls")
 def show_websites():
-    websites_data = act.get_websites()
-    return render_template("urls_page.html", data=websites_data)
+    return render_template("urls_page.html", data=act.get_websites())
 
 
 @app.post("/urls/<id>/checks")
