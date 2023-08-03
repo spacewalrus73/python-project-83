@@ -1,6 +1,6 @@
 import pytest
 from page_analyzer.app import app
-from page_analyzer.db_actions import select, extract_one, delete
+from page_analyzer.db_functions import select, extract_one, delete
 
 
 @pytest.fixture()
